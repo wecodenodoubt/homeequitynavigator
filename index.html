@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Equity Navigator | 2025 Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FIX: Use specific UMD build for Chart.js to ensure global 'Chart' variable exists -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- LDRS Loaders (Bouncy) -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/bouncy.js"></script>
+
+    <style>
+        /* Custom styles for chart containers */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Mobile base height */
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px; /* Desktop height */
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a8a29e; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #78716c; 
+        }
+
+        .active-tab {
+            border-bottom: 2px solid #0f766e; /* teal-700 */
+            color: #0f766e;
+            font-weight: bold;
+        }
+
+        /* Markdown-like styling for AI responses */
+        .ai-response ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .ai-response strong { color: #0f766e; font-weight: 700; }
+        .ai-response p { margin-bottom: 0.75rem; }
+
+        /* Chat Widget Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-open { animation: slideIn 0.3s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <span class="text-2xl">🏠</span>
+                    <span class="font-bold text-xl tracking-tight text-stone-700">Equity<span class="text-teal-700">Navigator</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('dashboard')" class="text-stone-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition">Dashboard</button>
+                    <button onclick="scrollToSection('comparison')" class="text-stone-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition">Loan vs HELOC</button>
+                    <button onclick="scrollToSection('ai-analyzer')" class="text-teal-700 hover:text-teal-900 px-3 py-2 text-sm font-bold transition flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Analysis</button>
+                    <button onclick="scrollToSection('qualify')" class="text-stone-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition">Qualify</button>
+                    <button onclick="scrollToSection('mistakes')" class="text-stone-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition">Mistakes</button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-stone-600 hover:text-teal-700 focus:outline-none">
+                        <span class="text-2xl">☰</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-stone-200 px-4 pt-2 pb-4 space-y-2 shadow-lg">
+            <button onclick="scrollToSection('dashboard')" class="block w-full text-left text-stone-600 hover:bg-stone-50 px-3 py-2 rounded-md">Dashboard</button>
+            <button onclick="scrollToSection('comparison')" class="block w-full text-left text-stone-600 hover:bg-stone-50 px-3 py-2 rounded-md">Loan vs HELOC</button>
+            <button onclick="scrollToSection('ai-analyzer')" class="block w-full text-left text-teal-700 font-bold hover:bg-stone-50 px-3 py-2 rounded-md">✨ AI Analysis</button>
+            <button onclick="scrollToSection('qualify')" class="block w-full text-left text-stone-600 hover:bg-stone-50 px-3 py-2 rounded-md">Qualify</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-br from-stone-100 to-stone-200 py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-stone-800 mb-6 tracking-tight">
+                Unlock Your Home's Potential
+            </h1>
+            <p class="text-lg sm:text-xl text-stone-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                Property values are rising. You may be sitting on a significant financial asset. 
+                Whether you need to fund renovations or consolidate debt, understanding 
+                <strong>Home Equity Loans</strong> and <strong>HELOCs</strong> is your first step.
+            </p>
+            <div class="flex justify-center gap-4">
+                <button onclick="scrollToSection('dashboard')" class="bg-teal-700 hover:bg-teal-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-0.5">
+                    Calculate My Equity
+                </button>
+                <button onclick="scrollToSection('ai-analyzer')" class="bg-white hover:bg-stone-50 text-teal-700 border border-teal-200 font-bold py-3 px-8 rounded-full shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Smart Analysis
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <!-- SECTION 1: Equity Dashboard (Calculator & Pie Chart) -->
+        <section id="dashboard" class="scroll-mt-24">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-stone-800 mb-4">Your Personal Equity Dashboard</h2>
+                    <p class="text-stone-600 mb-6">
+                        Before borrowing, you need to know what you have. Enter your estimated home value and current mortgage balance below to see your "Equity Position" and Loan-to-Value (LTV) ratio—a critical factor for lenders.
+                    </p>
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Estimated Home Value ($)</label>
+                            <input type="number" id="homeValueInput" value="400000" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none transition" oninput="updateEquityChart()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Current Mortgage Balance ($)</label>
+                            <input type="number" id="mortgageBalanceInput" value="250000" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none transition" oninput="updateEquityChart()">
+                        </div>
+                        
+                        <div class="pt-4 border-t border-stone-100">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-stone-500">Your Equity:</span>
+                                <span id="equityDisplay" class="text-2xl font-bold text-teal-700">$150,000</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <span class="text-stone-500">LTV Ratio:</span>
+                                <span id="ltvDisplay" class="text-xl font-bold text-stone-800">62.5%</span>
+                            </div>
+                            <p class="text-xs text-stone-400 mt-2">
+                                *Lenders prefer an LTV below 80%. Lower is better.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200">
+                    <h3 class="text-center text-sm font-semibold text-stone-500 uppercase tracking-wide mb-4">Equity Visualization</h3>
+                    <div class="chart-container">
+                        <canvas id="equityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Market Rates Context -->
+        <section id="rates" class="scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">The Rate Landscape (2024-2025)</h2>
+                <p class="text-stone-600">
+                    Why use your home equity? Because it's one of the cheapest ways to borrow money. As of late 2024/early 2025, borrowing costs have shifted. While higher than the historic lows of the past, equity rates remain significantly lower than alternatives.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-stone-200">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2">
+                        <h3 class="text-lg font-bold text-stone-800 mb-2">Interest Rate Comparison</h3>
+                        <p class="text-sm text-stone-500 mb-6">Estimated Average APRs. Actual rates vary by lender.</p>
+                        <div class="chart-container">
+                            <canvas id="rateComparisonChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-stone-50 p-6 rounded-xl flex flex-col justify-center">
+                        <h4 class="font-bold text-teal-800 mb-4 text-lg">Key Takeaways</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <span class="text-teal-600 text-xl">📉</span>
+                                <p class="text-sm text-stone-700"><strong>Much Lower than Cards:</strong> Equity loans are often 1/3 the cost of credit card debt.</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-teal-600 text-xl">🔒</span>
+                                <p class="text-sm text-stone-700"><strong>Fixed Security:</strong> Home Equity Loans offer fixed rates, protecting you if market rates skyrocket.</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-teal-600 text-xl">⚠️</span>
+                                <p class="text-sm text-stone-700"><strong>Variable Risk:</strong> HELOC rates track the Prime Rate. If the Fed raises rates, HELOCs get more expensive.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Comparison & Decision Tool -->
+        <section id="comparison" class="scroll-mt-24">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">Home Equity Loan vs. HELOC</h2>
+                <p class="text-stone-600 max-w-2xl mx-auto">
+                    They sound similar, but they work very differently. Use the toggle below to compare details, or take the interactive quiz to find your match.
+                </p>
+            </div>
+
+            <!-- Toggle Comparison UI -->
+            <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden mb-12">
+                <div class="flex border-b border-stone-200">
+                    <button id="btn-loan" class="flex-1 py-4 text-center font-bold text-stone-600 hover:bg-stone-50 transition active-tab" onclick="switchTab('loan')">
+                        Home Equity Loan
+                    </button>
+                    <button id="btn-heloc" class="flex-1 py-4 text-center font-bold text-stone-600 hover:bg-stone-50 transition" onclick="switchTab('heloc')">
+                        HELOC (Line of Credit)
+                    </button>
+                </div>
+                
+                <div class="p-8 min-h-[300px]">
+                    <!-- Loan Content -->
+                    <div id="content-loan" class="grid md:grid-cols-2 gap-8 animate-fade-in">
+                        <div>
+                            <h3 class="text-2xl font-bold text-stone-800 mb-2">The "Second Mortgage"</h3>
+                            <p class="text-stone-600 mb-4">A lump-sum loan with a steady repayment schedule.</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center gap-2"><span class="text-teal-600">✔</span> <strong>Rate:</strong> Fixed (Stays the same).</li>
+                                <li class="flex items-center gap-2"><span class="text-teal-600">✔</span> <strong>Payout:</strong> One-time lump sum cash.</li>
+                                <li class="flex items-center gap-2"><span class="text-teal-600">✔</span> <strong>Payments:</strong> Steady, predictable.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-100">
+                            <h4 class="font-bold text-stone-800 mb-2">Best Used For:</h4>
+                            <p class="text-stone-600 text-sm mb-4">Large, one-time expenses where you know the exact cost.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-stone-200 shadow-sm">Roof Replacement</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-stone-200 shadow-sm">Debt Consolidation</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-stone-200 shadow-sm">Major Addition</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HELOC Content -->
+                    <div id="content-heloc" class="hidden grid md:grid-cols-2 gap-8 animate-fade-in">
+                        <div>
+                            <h3 class="text-2xl font-bold text-stone-800 mb-2">The "Credit Card for Your House"</h3>
+                            <p class="text-stone-600 mb-4">A revolving credit line you can draw from as needed.</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center gap-2"><span class="text-amber-600">⚡</span> <strong>Rate:</strong> Variable (Changes with market).</li>
+                                <li class="flex items-center gap-2"><span class="text-amber-600">⚡</span> <strong>Payout:</strong> Draw funds as needed.</li>
+                                <li class="flex items-center gap-2"><span class="text-amber-600">⚡</span> <strong>Payments:</strong> Varies based on balance & rates.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-100">
+                            <h4 class="font-bold text-stone-800 mb-2">Best Used For:</h4>
+                            <p class="text-stone-600 text-sm mb-4">Ongoing costs, projects with undefined budgets, or safety nets.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-stone-200 shadow-sm">Multi-stage Renovation</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-stone-200 shadow-sm">Emergency Fund</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-xs border border-stone-200 shadow-sm">Tuition Payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decision Quiz -->
+            <div class="bg-teal-900 text-white rounded-2xl p-8 shadow-lg">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Not Sure Which To Choose?</h3>
+                        <p class="text-teal-100 mb-6">Answer these two questions to get a recommendation based on your financial needs.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-medium mb-2">1. How do you need the money?</p>
+                                <div class="flex gap-2">
+                                    <button onclick="setQuizAnswer(1, 'lump')" class="quiz-btn-1 flex-1 py-2 px-4 rounded border border-teal-500 hover:bg-teal-800 transition text-sm">All at once (Lump Sum)</button>
+                                    <button onclick="setQuizAnswer(1, 'draw')" class="quiz-btn-1 flex-1 py-2 px-4 rounded border border-teal-500 hover:bg-teal-800 transition text-sm">Over time (As needed)</button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-medium mb-2">2. What is your risk tolerance for payments?</p>
+                                <div class="flex gap-2">
+                                    <button onclick="setQuizAnswer(2, 'fixed')" class="quiz-btn-2 flex-1 py-2 px-4 rounded border border-teal-500 hover:bg-teal-800 transition text-sm">I need a Fixed Amount</button>
+                                    <button onclick="setQuizAnswer(2, 'variable')" class="quiz-btn-2 flex-1 py-2 px-4 rounded border border-teal-500 hover:bg-teal-800 transition text-sm">I can handle Variable</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-teal-800 rounded-xl p-6 flex flex-col items-center justify-center text-center h-full min-h-[200px] border border-teal-700">
+                        <div id="quiz-result-icon" class="text-4xl mb-2">🤔</div>
+                        <h4 id="quiz-result-title" class="text-xl font-bold mb-2">Recommendation</h4>
+                        <p id="quiz-result-desc" class="text-teal-200 text-sm">Select options on the left to see your best match.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: GEMINI SCENARIO ANALYZER -->
+        <section id="ai-analyzer" class="scroll-mt-24">
+            <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-3xl p-8 md:p-12 border border-teal-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-teal-900 text-9xl -mt-4 -mr-4 pointer-events-none">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <div class="relative z-10 max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Powered by Gemini AI ✨</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-teal-900 mt-4 mb-3">Smart Scenario Analyzer</h2>
+                        <p class="text-teal-800 text-lg">
+                            Tell us your specific goal (e.g., "I want to renovate my kitchen for $50k and sell in 2 years"). 
+                            Our AI will analyze your financial data from the simulators above and provide a personalized recommendation.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-stone-700 mb-2">Describe your goal & timeline:</label>
+                            <textarea id="scenarioInput" rows="3" class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition resize-none" placeholder="e.g. I need $30k to pay off credit cards and want the lowest monthly payment possible..."></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button onclick="analyzeScenario()" id="analyzeBtn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition flex items-center gap-2">
+                                <span>Analyze My Situation</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Result Area -->
+                        <div id="aiResultArea" class="hidden mt-8 border-t border-stone-100 pt-8 animate-fade-in">
+                            <div class="flex items-start gap-4">
+                                <div class="bg-teal-100 p-3 rounded-full text-teal-700 hidden sm:block">
+                                    <i class="fa-solid fa-robot text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-stone-800 mb-2">Gemini's Assessment:</h4>
+                                    <div id="aiOutputText" class="text-stone-600 ai-response leading-relaxed"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div id="aiLoading" class="hidden mt-8 text-center py-4">
+                             <l-bouncy size="45" speed="1.75" color="#0f766e"></l-bouncy>
+                             <p class="text-sm text-stone-500 mt-2">Analyzing your financial profile...</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Qualification Factors Simulator -->
+        <section id="qualify" class="scroll-mt-24">
+            <div class="grid lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-1">
+                    <h2 class="text-3xl font-bold text-stone-800 mb-4">How to Qualify</h2>
+                    <p class="text-stone-600 mb-6">
+                        Lenders use rigorous criteria. Why does one neighbor get a 7% offer while another gets 9%? It usually comes down to these key factors.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-stone-200">
+                            <span class="block font-bold text-stone-800 mb-1">1. Credit Score</span>
+                            <span class="text-sm text-stone-600">The most influential factor. 760+ gets the best rates.</span>
+                        </li>
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-stone-200">
+                            <span class="block font-bold text-stone-800 mb-1">2. Loan-to-Value (LTV)</span>
+                            <span class="text-sm text-stone-600">How much equity you keep. Lenders prefer LTV below 80%.</span>
+                        </li>
+                        <li class="bg-white p-4 rounded-lg shadow-sm border border-stone-200">
+                            <span class="block font-bold text-stone-800 mb-1">3. Debt-to-Income (DTI)</span>
+                            <span class="text-sm text-stone-600">Can you afford the payment? Keep total debt payments under 43% of income.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold text-stone-800 mb-6">Eligibility Simulator</h3>
+                    <p class="text-sm text-stone-500 mb-8">Adjust the sliders to see how your financial health impacts your likely approval tier. <span class="text-teal-600 font-semibold">(The AI Analyzer uses these values!)</span></p>
+                    
+                    <div class="space-y-8">
+                        <!-- Credit Score Slider -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="font-medium text-stone-700">Credit Score (FICO)</label>
+                                <span id="scoreVal" class="font-bold text-teal-700">720</span>
+                            </div>
+                            <input type="range" id="scoreInput" min="600" max="850" value="720" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-teal-600" oninput="updateSimulator()">
+                            <div class="flex justify-between text-xs text-stone-400 mt-1">
+                                <span>600 (Risky)</span>
+                                <span>850 (Excellent)</span>
+                            </div>
+                        </div>
+
+                        <!-- DTI Slider -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="font-medium text-stone-700">Debt-to-Income Ratio (DTI)</label>
+                                <span id="dtiVal" class="font-bold text-teal-700">35%</span>
+                            </div>
+                            <input type="range" id="dtiInput" min="0" max="60" value="35" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-teal-600" oninput="updateSimulator()">
+                            <div class="flex justify-between text-xs text-stone-400 mt-1">
+                                <span>0% (Great)</span>
+                                <span>60% (High Risk)</span>
+                            </div>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div class="mt-8 p-6 bg-stone-50 rounded-xl border border-stone-200 text-center transition-all duration-500" id="simResultBox">
+                            <span class="text-sm uppercase tracking-wider font-semibold text-stone-500">Likely Outcome</span>
+                            <h4 id="simResultTitle" class="text-2xl font-bold text-stone-800 mt-2">Standard Approval</h4>
+                            <p id="simResultDesc" class="text-stone-600 mt-2">You meet the basic requirements. Expect market average rates.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Pros, Cons & Mistakes -->
+        <section id="mistakes" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-800 mb-8 text-center">Weighing the Risks</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Pros -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-teal-800 flex items-center gap-2">
+                        <span>👍</span> The Pros
+                    </h3>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-teal-500 shadow-sm">
+                        <h4 class="font-bold text-stone-800">Lower Interest Rates</h4>
+                        <p class="text-sm text-stone-600">Generally cheaper than personal loans or credit cards.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-teal-500 shadow-sm">
+                        <h4 class="font-bold text-stone-800">Tax Deductible Interest</h4>
+                        <p class="text-sm text-stone-600">Potentially deductible if funds are used to substantially improve your home (Consult a pro).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-teal-500 shadow-sm">
+                        <h4 class="font-bold text-stone-800">Access to Large Sums</h4>
+                        <p class="text-sm text-stone-600">Borrow much more than you could with an unsecured loan.</p>
+                    </div>
+                </div>
+
+                <!-- Cons -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-amber-800 flex items-center gap-2">
+                        <span>👎</span> The Cons & Mistakes
+                    </h3>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                        <h4 class="font-bold text-stone-800">Your Home is Collateral</h4>
+                        <p class="text-sm text-stone-600">The biggest risk. If you cannot make payments, the lender can foreclose.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                        <h4 class="font-bold text-stone-800">Closing Costs</h4>
+                        <p class="text-sm text-stone-600">Appraisal and origination fees can add 2%–5% to the loan cost. Don't ignore these.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                        <h4 class="font-bold text-stone-800">The "Wants" Trap</h4>
+                        <p class="text-sm text-stone-600">Avoid using equity for vacations or luxury cars. Only invest in assets or debt reduction.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: FAQ Accordion -->
+        <section class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-stone-800 mb-8 text-center">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <details class="group bg-white rounded-xl shadow-sm border border-stone-200">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 group-open:bg-stone-50 transition">
+                        <span>What is a good home equity loan rate right now?</span>
+                        <span class="transition group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="text-stone-600 p-6 pt-0 mt-4 leading-relaxed">
+                        A "good" rate is typically one that is close to the prime rate for HELOCs or within 1–2 percentage points of current 30-year mortgage rates for fixed loans. Borrowers with excellent credit (760+) will secure rates at the bottom of this range.
+                    </div>
+                </details>
+                <details class="group bg-white rounded-xl shadow-sm border border-stone-200">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 group-open:bg-stone-50 transition">
+                        <span>Can I get a home equity loan with bad credit?</span>
+                        <span class="transition group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="text-stone-600 p-6 pt-0 mt-4 leading-relaxed">
+                        Yes, it is possible, but it is more difficult. You may need significant equity (low LTV) to offset the risk. Expect to pay higher interest rates, and be wary of predatory lenders who target homeowners with poor credit.
+                    </div>
+                </details>
+                <details class="group bg-white rounded-xl shadow-sm border border-stone-200">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 group-open:bg-stone-50 transition">
+                        <span>How long does it take to get a home equity loan?</span>
+                        <span class="transition group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="text-stone-600 p-6 pt-0 mt-4 leading-relaxed">
+                        The process typically takes between 2 to 6 weeks. It usually involves a home appraisal, income verification, and a title search, similar to your original mortgage process.
+                    </div>
+                </details>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- GEMINI CHAT WIDGET -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Window -->
+        <div id="chatWindow" class="hidden bg-white rounded-2xl shadow-2xl w-80 sm:w-96 flex flex-col mb-4 border border-stone-200" style="height: 500px;">
+            <div class="bg-teal-700 text-white p-4 rounded-t-2xl flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-robot"></i>
+                    <span class="font-bold">Equity Advisor</span>
+                </div>
+                <button onclick="toggleChat()" class="hover:text-teal-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chatHistory" class="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50">
+                <div class="flex items-start gap-2">
+                    <div class="bg-teal-100 p-2 rounded-full text-teal-700 text-xs"><i class="fa-solid fa-robot"></i></div>
+                    <div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm text-sm text-stone-700 border border-stone-200">
+                        Hello! I'm your AI Equity Advisor. Ask me anything about HELOCs, interest rates, or closing costs!
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-stone-200 rounded-b-2xl">
+                <div class="flex gap-2">
+                    <input type="text" id="chatInput" class="flex-1 border border-stone-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ask a question..." onkeypress="handleChatKey(event)">
+                    <button onclick="sendChatMessage()" class="bg-teal-700 hover:bg-teal-800 text-white px-4 rounded-lg transition"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Button -->
+        <button onclick="toggleChat()" class="bg-teal-700 hover:bg-teal-800 text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center text-2xl transition transform hover:scale-105">
+            <i class="fa-solid fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-12 mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="mb-4">© 2025 Home Equity Navigator.</p>
+            <p class="text-xs max-w-2xl mx-auto leading-relaxed opacity-70">
+                Disclaimer: This application is for educational purposes only and does not constitute financial advice. Rates and terms vary by lender and individual financial situations. Please consult with a qualified financial advisor or loan officer before making borrowing decisions.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JS Implementation -->
+    <script>
+        // --- 1. Navigation Logic ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('mobile-menu').classList.add('hidden');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- 2. Chart Configurations ---
+        
+        // Equity Chart (Doughnut)
+        let equityChartInstance = null;
+
+        function initEquityChart() {
+            const ctx = document.getElementById('equityChart').getContext('2d');
+            equityChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Your Equity', 'Mortgage Debt'],
+                    datasets: [{
+                        data: [150000, 250000],
+                        backgroundColor: ['#0f766e', '#e7e5e4'], // Teal-700, Stone-200
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'sans-serif', size: 14 },
+                                color: '#44403c'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%',
+                }
+            });
+        }
+
+        // Rate Comparison Chart (Bar)
+        function initRateChart() {
+            const ctx = document.getElementById('rateComparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Credit Cards', 'Personal Loans', 'Home Equity Loan', 'Primary Mortgage'],
+                    datasets: [{
+                        label: 'Average Interest Rate (%)',
+                        data: [24.5, 12.0, 8.5, 6.8], // Concept data based on report ranges
+                        backgroundColor: [
+                            '#ef4444', // Red for high rate
+                            '#f59e0b', // Amber
+                            '#0f766e', // Teal (Focus)
+                            '#78716c'  // Stone
+                        ],
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y', // Horizontal Bar for easier reading of text labels
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                afterBody: function(context) {
+                                    const index = context[0].dataIndex;
+                                    const notes = [
+                                        "Unsecured, highest risk.",
+                                        "Unsecured, moderate risk.",
+                                        "Secured by home, lower risk.",
+                                        "Secured, primary lien position."
+                                    ];
+                                    return notes[index];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { display: true, color: '#f5f5f4' }
+                        },
+                        y: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- 3. Interactive Logic ---
+
+        // Update Equity Calculator
+        function updateEquityChart() {
+            const homeValue = parseFloat(document.getElementById('homeValueInput').value) || 0;
+            const mortgage = parseFloat(document.getElementById('mortgageBalanceInput').value) || 0;
+            
+            // Logic constraints
+            const equity = Math.max(0, homeValue - mortgage);
+            let ltv = 0;
+            if (homeValue > 0) {
+                ltv = (mortgage / homeValue) * 100;
+            }
+
+            // Update DOM text
+            document.getElementById('equityDisplay').innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(equity);
+            
+            const ltvEl = document.getElementById('ltvDisplay');
+            ltvEl.innerText = ltv.toFixed(1) + '%';
+            
+            // Color feedback for LTV
+            if (ltv > 80) ltvEl.className = "text-xl font-bold text-amber-600";
+            else ltvEl.className = "text-xl font-bold text-teal-700";
+
+            // Update Chart
+            if (equityChartInstance) {
+                equityChartInstance.data.datasets[0].data = [equity, mortgage];
+                equityChartInstance.update();
+            }
+        }
+
+        // Tab Switcher
+        function switchTab(tab) {
+            const loanContent = document.getElementById('content-loan');
+            const helocContent = document.getElementById('content-heloc');
+            const btnLoan = document.getElementById('btn-loan');
+            const btnHeloc = document.getElementById('btn-heloc');
+
+            if (tab === 'loan') {
+                loanContent.classList.remove('hidden');
+                helocContent.classList.add('hidden');
+                btnLoan.classList.add('active-tab');
+                btnHeloc.classList.remove('active-tab');
+            } else {
+                loanContent.classList.add('hidden');
+                helocContent.classList.remove('hidden');
+                btnLoan.classList.remove('active-tab');
+                btnHeloc.classList.add('active-tab');
+            }
+        }
+
+        // Quiz Logic
+        let quizState = { q1: null, q2: null };
+
+        function setQuizAnswer(q, val) {
+            if (q === 1) quizState.q1 = val;
+            if (q === 2) quizState.q2 = val;
+
+            // Update button styles
+            document.querySelectorAll(`.quiz-btn-${q}`).forEach(btn => {
+                btn.classList.remove('bg-teal-700', 'text-white', 'border-transparent');
+                btn.classList.add('border-teal-500');
+            });
+            // Highlight selected
+            event.target.classList.remove('border-teal-500');
+            event.target.classList.add('bg-teal-700', 'text-white', 'border-transparent');
+
+            calcQuizResult();
+        }
+
+        function calcQuizResult() {
+            const icon = document.getElementById('quiz-result-icon');
+            const title = document.getElementById('quiz-result-title');
+            const desc = document.getElementById('quiz-result-desc');
+
+            if (!quizState.q1 || !quizState.q2) return;
+
+            if (quizState.q1 === 'lump' && quizState.q2 === 'fixed') {
+                icon.innerText = "🏠";
+                title.innerText = "Home Equity Loan";
+                desc.innerText = "Perfect fit. You get the full amount upfront with a rate that never changes.";
+            } else if (quizState.q1 === 'draw' && quizState.q2 === 'variable') {
+                icon.innerText = "💳";
+                title.innerText = "HELOC";
+                desc.innerText = "Ideal match. You get flexibility to borrow as you go, similar to a credit card.";
+            } else if (quizState.q1 === 'lump' && quizState.q2 === 'variable') {
+                icon.innerText = "⚠️";
+                title.innerText = "Consider a Home Equity Loan";
+                desc.innerText = "Even though you're okay with variable rates, needing a lump sum usually aligns better with a standard loan.";
+            } else {
+                icon.innerText = "⚖️";
+                title.innerText = "Mixed Needs";
+                desc.innerText = "You want flexibility (Draw) but stability (Fixed). Look for a HELOC with a 'Fixed-Rate Option' feature.";
+            }
+        }
+
+        // Simulator Logic
+        function updateSimulator() {
+            const score = parseInt(document.getElementById('scoreInput').value);
+            const dti = parseInt(document.getElementById('dtiInput').value);
+
+            document.getElementById('scoreVal').innerText = score;
+            document.getElementById('dtiVal').innerText = dti + "%";
+
+            const resultBox = document.getElementById('simResultBox');
+            const resultTitle = document.getElementById('simResultTitle');
+            const resultDesc = document.getElementById('simResultDesc');
+
+            // Logic derived from report
+            // Best: Score >= 760 AND DTI <= 43
+            // Good: Score >= 680 AND DTI <= 43
+            // Risky: Score < 680 OR DTI > 43
+
+            if (score >= 760 && dti <= 43) {
+                resultBox.className = "mt-8 p-6 bg-teal-50 rounded-xl border-2 border-teal-200 text-center transition-all duration-500";
+                resultTitle.innerText = "Prime Candidate 🌟";
+                resultTitle.className = "text-2xl font-bold text-teal-800 mt-2";
+                resultDesc.innerText = "You qualify for the lowest advertised rates. Lenders will compete for your business.";
+            } else if (score >= 680 && dti <= 50) {
+                resultBox.className = "mt-8 p-6 bg-yellow-50 rounded-xl border-2 border-yellow-200 text-center transition-all duration-500";
+                resultTitle.innerText = "Likely Approved";
+                resultTitle.className = "text-2xl font-bold text-yellow-800 mt-2";
+                resultDesc.innerText = "You likely qualify, but may pay a slightly higher interest rate 'risk premium'.";
+            } else {
+                resultBox.className = "mt-8 p-6 bg-red-50 rounded-xl border-2 border-red-200 text-center transition-all duration-500";
+                resultTitle.innerText = "High Difficulty";
+                resultTitle.className = "text-2xl font-bold text-red-800 mt-2";
+                resultDesc.innerText = "Approval may be difficult. You might need significant equity (low LTV) to offset these factors.";
+            }
+        }
+
+        // --- GEMINI API INTEGRATION ---
+        
+        // Configuration
+        const apiKey = ""; // Set by environment
+        const model = "gemini-2.5-flash-preview-09-2025";
+
+        async function callGemini(prompt, systemInstruction) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            try {
+                // Exponential backoff logic
+                const delays = [1000, 2000, 4000, 8000, 16000];
+                for (let i = 0; i < delays.length; i++) {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.candidates[0].content.parts[0].text;
+                    }
+
+                    if (response.status === 429) {
+                        await new Promise(resolve => setTimeout(resolve, delays[i]));
+                        continue;
+                    }
+                    
+                    throw new Error(`API Error: ${response.status}`);
+                }
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                return "I'm having trouble connecting to the financial database right now. Please try again in a moment.";
+            }
+        }
+
+        // 1. SCENARIO ANALYZER LOGIC
+        async function analyzeScenario() {
+            const userGoal = document.getElementById('scenarioInput').value;
+            const btn = document.getElementById('analyzeBtn');
+            const loading = document.getElementById('aiLoading');
+            const resultArea = document.getElementById('aiResultArea');
+            const outputText = document.getElementById('aiOutputText');
+
+            if (!userGoal.trim()) {
+                alert("Please describe your goal first.");
+                return;
+            }
+
+            // UI State
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            loading.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+
+            // Gather Context
+            const homeValue = document.getElementById('homeValueInput').value;
+            const mortgage = document.getElementById('mortgageBalanceInput').value;
+            const equity = document.getElementById('equityDisplay').innerText;
+            const ltv = document.getElementById('ltvDisplay').innerText;
+            const score = document.getElementById('scoreInput').value;
+            const dti = document.getElementById('dtiInput').value;
+
+            // Construct Prompt
+            const prompt = `
+                User Financial Context:
+                - Home Value: $${homeValue}
+                - Mortgage Balance: $${mortgage}
+                - Available Equity (Est): ${equity}
+                - Current LTV: ${ltv}
+                - Credit Score: ${score}
+                - DTI: ${dti}%
+                
+                User Goal/Scenario: "${userGoal}"
+                
+                Task:
+                1. Analyze if the user is in a strong position to borrow based on LTV and Score.
+                2. Recommend either a Home Equity Loan or HELOC based on their goal (e.g. renovation vs debt vs emergency).
+                3. Provide one specific "Smart Tip" or risk warning relevant to their specific goal.
+                
+                Format: Use HTML tags <strong> for emphasis and <ul>/<li> for lists. Keep it concise (under 150 words). Tone: Professional, encouraging, but realistic.
+            `;
+
+            const systemPrompt = "You are an expert financial advisor specializing in Home Equity products. You provide safe, educational advice.";
+
+            // Call API
+            const response = await callGemini(prompt, systemPrompt);
+
+            // Update UI
+            outputText.innerHTML = response; // Trusted source
+            loading.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+
+        // 2. CHAT WIDGET LOGIC
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('hidden');
+            if (!chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.add('chat-open');
+                document.getElementById('chatInput').focus();
+            } else {
+                chatWindow.classList.remove('chat-open'); // Reset animation state
+            }
+        }
+
+        function handleChatKey(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const history = document.getElementById('chatHistory');
+            const msg = input.value.trim();
+
+            if (!msg) return;
+
+            // Add User Message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'flex items-start gap-2 justify-end';
+            userDiv.innerHTML = `
+                <div class="bg-teal-700 text-white p-3 rounded-lg rounded-tr-none shadow-sm text-sm max-w-[80%]">
+                    ${msg}
+                </div>
+                <div class="bg-stone-200 p-2 rounded-full text-stone-600 text-xs"><i class="fa-solid fa-user"></i></div>
+            `;
+            history.appendChild(userDiv);
+            input.value = '';
+            history.scrollTop = history.scrollHeight;
+
+            // Add Loading Placeholder
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex items-start gap-2';
+            loadingDiv.id = 'chatLoading';
+            loadingDiv.innerHTML = `
+                <div class="bg-teal-100 p-2 rounded-full text-teal-700 text-xs"><i class="fa-solid fa-robot"></i></div>
+                <div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm text-sm text-stone-500 border border-stone-200">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Thinking...
+                </div>
+            `;
+            history.appendChild(loadingDiv);
+            history.scrollTop = history.scrollHeight;
+
+            // Call API
+            const systemPrompt = "You are a helpful assistant for a Home Equity educational app. Answer questions about HELOCs, Equity Loans, Interest Rates, and Closing Costs concisely. If asked for financial advice, give general information and suggest consulting a professional.";
+            const response = await callGemini(msg, systemPrompt);
+
+            // Remove loading and add AI response
+            history.removeChild(loadingDiv);
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'flex items-start gap-2';
+            aiDiv.innerHTML = `
+                <div class="bg-teal-100 p-2 rounded-full text-teal-700 text-xs"><i class="fa-solid fa-robot"></i></div>
+                <div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm text-sm text-stone-700 border border-stone-200 ai-response">
+                    ${response}
+                </div>
+            `;
+            history.appendChild(aiDiv);
+            history.scrollTop = history.scrollHeight;
+        }
+
+        // Initialize
+        window.onload = function() {
+            initEquityChart();
+            initRateChart();
+            updateEquityChart(); // Run initial calculation
+        };
+
+    </script>
+</body>
+</html>
